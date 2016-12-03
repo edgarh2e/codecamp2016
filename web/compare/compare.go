@@ -84,19 +84,24 @@ func compare(usernames ...string) (*Output, error) {
 	log.Printf("users: %v", users)
 	log.Printf("nodes: %v", nodes)
 
-	tgf := ""
-	for id, username := range users {
-		tgf += fmt.Sprintf("%s %s\n", id, username)
-	}
+	filterUsers := make(map[string]string)
 
-	tgf += "#\n"
+	tgfNodes := ""
 	for a, aa := range nodes {
 		for b := range aa {
 			if nodes[a][b] && nodes[b][a] {
-				tgf += fmt.Sprintf("%s %s\n", a, b)
+				filterUsers[a] = users[a]
+				filterUsers[b] = users[b]
+				tgfNodes += fmt.Sprintf("%s %s\n", a, b)
 			}
 		}
 	}
+
+	tgf := ""
+	for id, username := range filterUsers {
+		tgf += fmt.Sprintf("%s %s\n", id, username)
+	}
+	tgf += "#\n" + tgfNodes
 
 	log.Printf("tgf: %v", tgf)
 
@@ -113,8 +118,6 @@ func compare(usernames ...string) (*Output, error) {
 	}
 
 	buf := stdOut.Bytes()
-
-	log.Printf("out: %v", string(buf))
 
 	hash := fmt.Sprintf("%x", md5.Sum(buf))
 
