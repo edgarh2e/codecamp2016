@@ -23,9 +23,27 @@ var (
 )
 
 func init() {
-	anaconda.SetConsumerKey("UsrJ9YUKU8VwayuIu1M95zdc3")
-	anaconda.SetConsumerSecret("8ftX1TdKOCNb86wlUk1ISzWe37VK8larowJySl6l8z4td65QfE")
-	api = anaconda.NewTwitterApi("4830555837-efdRD4A8vcXt3lWUOfLyjtg1wyP6s15FCcfh9L2", "VlrFuw2mb6W08EcSI2qCbJQLGLsTyEBxIlbqIEatxofRh")
+	/*
+		anaconda.SetConsumerKey("rzOULAw1RmqCSbhH9Mwlas6kF")
+		anaconda.SetConsumerSecret("SvJRKbWO1d3A6VzRMqZEgbR67aLtF3Lp3Vo94RWfd9LbluuzRz")
+		api = anaconda.NewTwitterApi("4830555837-VYIXrgP3ehP4wtWgQfsqGFS6yvLlAsMwjSxqeV7", "H2JohUEU4q65SlglPCMws7aPk1Vx2pFEih254heTEKttb")
+	*/
+
+	/*
+		anaconda.SetConsumerKey("wqWck5NpNQqkI1HPhvj94wyFs")
+		anaconda.SetConsumerSecret("9OLEbo7kvB1tko8hdw2HS5IX8hdV9wtnAbZQYK0uA7ggsHsoFN")
+		api = anaconda.NewTwitterApi("4830555837-nA2udzx6q8tt38ENd8Tia9drkwKipT5j2ryJOGj", "u4b6Tj9n4H9NuaQq4S33c6DBHbZO0i8WKJYnyAJoFS4PD")
+	*/
+
+	/*
+		anaconda.SetConsumerKey("UsrJ9YUKU8VwayuIu1M95zdc3")
+		anaconda.SetConsumerSecret("8ftX1TdKOCNb86wlUk1ISzWe37VK8larowJySl6l8z4td65QfE")
+		api = anaconda.NewTwitterApi("4830555837-efdRD4A8vcXt3lWUOfLyjtg1wyP6s15FCcfh9L2", "VlrFuw2mb6W08EcSI2qCbJQLGLsTyEBxIlbqIEatxofRh")
+	*/
+
+	anaconda.SetConsumerKey("RvYXEcFQVqdIeoHZHafR1u8mS")
+	anaconda.SetConsumerSecret("vqpKd6pBX2QrKbMiZlcYG60hwKTp4WHEefnuuDs9SqgOxhmYU7")
+	api = anaconda.NewTwitterApi("4830555837-PwQW0ulxARxFYA3xzBtxKndMwfZ4yicMMDBUjXG", "7s3scrTPo2RCdV9AUAfpjoTMOzEMtzH7Pu1aGPpSfzIw7")
 
 	var err error
 	db, err = bolt.Open("my.db", 0600, &bolt.Options{Timeout: 1 * time.Second})

@@ -41,6 +41,7 @@ func compare(usernames ...string) (*Output, error) {
 
 	data := make([]data.User, 0, 2)
 
+	// Obtenermos datos para n usuarios
 	for _, username := range usernames {
 		user, err := twitter.GetUser(username)
 		if err != nil {
@@ -109,6 +110,7 @@ func compare(usernames ...string) (*Output, error) {
 
 	log.Printf("tgf: %v", tgf)
 
+	// Pasamos el string TGF a python
 	cmd := exec.Command("python", binDir+"tgf2svg.py")
 	cmd.Stdin = bytes.NewBuffer([]byte(tgf))
 
@@ -127,6 +129,7 @@ func compare(usernames ...string) (*Output, error) {
 
 	fileName := path.Join(dataDir, hash+".svg")
 
+	// Guardamos a cache o leemos de cache
 	fp, err := os.Open(fileName)
 	if err == nil {
 		// TODO: is it a dir?
