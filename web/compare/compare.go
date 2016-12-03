@@ -2,23 +2,48 @@ package compare
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
+	"github.com/edgarh2e/codecamp2016/data"
+	"github.com/edgarh2e/codecamp2016/lib/twitter"
 	"os"
 	"path"
 )
 
 const dataDir = "/tmp"
 
-type Input struct {
-	Usernames []string `json:"usernames"`
-}
-
 type Output struct {
-	Image string `json:"image"`
+	Image string      `json:"image"`
+	Data  []data.User `json:"data"`
 }
 
-func compare(in *Input) (*Output, error) {
-	data := `
+func compare(usernames ...string) (*Output, error) {
+	if len(usernames) == 0 {
+		return nil, errors.New("Missing input")
+	}
+
+	data := make([]data.User, 0, 2)
+
+	for _, username := range usernames {
+		user, err := twitter.GetUser(username)
+		if err != nil {
+			return nil, err
+		}
+
+		user.Followers, err = twitter.GetFollowers(username)
+		if err != nil {
+			return nil, err
+		}
+
+		user.Following, err = twitter.GetFollowing(username)
+		if err != nil {
+			return nil, err
+		}
+
+		data = append(data, *user)
+	}
+
+	svg := `
 		<svg xmlns="http://www.w3.org/2000/svg"
 				xmlns:xlink="http://www.w3.org/1999/xlink">
 
@@ -31,7 +56,7 @@ func compare(in *Input) (*Output, error) {
 		</svg>
 	`
 
-	hash := fmt.Sprintf("%x", md5.Sum([]byte(data)))
+	hash := fmt.Sprintf("%x", md5.Sum([]byte(svg)))
 
 	fileName := path.Join(dataDir, hash+".svg")
 
@@ -40,6 +65,7 @@ func compare(in *Input) (*Output, error) {
 		// TODO: is it a dir?
 		return &Output{
 			Image: path.Base(fileName),
+			Data:  data,
 		}, nil
 	}
 
@@ -49,11 +75,12 @@ func compare(in *Input) (*Output, error) {
 	}
 	defer fp.Close()
 
-	if _, err := fp.Write([]byte(data)); err != nil {
+	if _, err := fp.Write([]byte(svg)); err != nil {
 		return nil, err
 	}
 
 	return &Output{
 		Image: path.Base(fileName),
+		Data:  data,
 	}, nil
 }

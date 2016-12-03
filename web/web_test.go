@@ -13,7 +13,7 @@ func TestCompare(t *testing.T) {
 	go listenAndServe(":1992")
 	time.Sleep(time.Second * 1)
 
-	res, err := http.Get(servicePrefix + "/compare?user=user1&user=user2&user=user3")
+	res, err := http.Get(servicePrefix + "/compare?user=testdude111&user=rowantestacc")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -7,7 +7,15 @@ import (
 )
 
 func compareHandler(w http.ResponseWriter, r *http.Request) {
-	res, err := compare(nil)
+	r.ParseForm()
+
+	users := make([]string, 0, 2)
+	for _, u := range r.Form["user"] {
+		users = append(users, u)
+	}
+	log.Printf("user: %v", users)
+
+	res, err := compare(users...)
 	if err != nil {
 		log.Printf("xxx: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
