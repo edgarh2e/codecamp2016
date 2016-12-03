@@ -65,8 +65,7 @@ Entrada
 Salida
 
 ```
-1232345666 pepe1
-1232345615 pepeA
+00024 pepe24
 ```
 
 # Etapa 3
