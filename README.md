@@ -80,6 +80,59 @@ Entrada
 ]
 ```
 
+```
+[
+    {
+        "followers": [
+            {
+                "id_str": "4831421233",
+                "username": "rowantestacc"
+            },
+            {
+                "id_str": "3827885655",
+                "username": "learning_hq"
+            }
+        ],
+        "following": [
+            {
+                "id_str": "697800927189794816",
+                "username": "jay_soo_test"
+            },
+            {
+                "id_str": "4831421233",
+                "username": "rowantestacc"
+            },
+            {
+                "id_str": "4850032137",
+                "username": "testbatman"
+            }
+        ],
+        "id_str": "4830555837",
+        "username": "testdude111"
+    },
+    {
+        "followers": [
+            {
+                "id_str": "3138066754",
+                "username": "soylagoni995"
+            },
+            {
+                "id_str": "4830555837",
+                "username": "testdude111"
+            }
+        ],
+        "following": [
+            {
+                "id_str": "4830555837",
+                "username": "testdude111"
+            }
+        ],
+        "id_str": "4831421233",
+        "username": "rowantestacc"
+    }
+]
+```
+
 Salida
 
 ```
