@@ -83,6 +83,8 @@ func compare(usernames ...string) (*Output, error) {
 	cmd.Stdin = bytes.NewBuffer([]byte(tgf))
 
 	stdOut, stdErr := bytes.NewBuffer(nil), bytes.NewBuffer(nil)
+	cmd.Stdout = stdOut
+	cmd.Stderr = stdErr
 
 	err := cmd.Run()
 	if err != nil {
