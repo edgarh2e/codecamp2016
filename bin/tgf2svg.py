@@ -2,9 +2,6 @@ from graphviz import Digraph
 import os
 import sys
 
-print sys.argv
-
-
 dot = Digraph(comment='Archivo TGF convertido a SVG')
 dot
 

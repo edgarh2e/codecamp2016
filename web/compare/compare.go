@@ -60,24 +60,43 @@ func compare(usernames ...string) (*Output, error) {
 		data = append(data, *user)
 	}
 
-	tgf := `1 uno
-2 dos
-3 tres
-4 cuatro
-5 cinco
-6 seis
-7 siete
-#
-1 2
-3 4
-1 5
-2 5
-6 6
-7 1
-7 2
-7 3
-2 7
-6 1`
+	users := make(map[string]string)
+	nodes := map[string]map[string]bool{}
+
+	for _, user := range data {
+		users[user.ID] = user.Username
+		for _, f := range user.Followers {
+			users[f.ID] = f.Username
+			if nodes[f.ID] == nil {
+				nodes[f.ID] = make(map[string]bool)
+			}
+			nodes[f.ID][user.ID] = true
+		}
+		for _, f := range user.Following {
+			users[f.ID] = f.Username
+			if nodes[user.ID] == nil {
+				nodes[user.ID] = make(map[string]bool)
+			}
+			nodes[user.ID][f.ID] = true
+		}
+	}
+
+	log.Printf("users: %v", users)
+	log.Printf("nodes: %v", nodes)
+
+	tgf := ""
+	for id, username := range users {
+		tgf += fmt.Sprintf("%s %s\n", id, username)
+	}
+
+	tgf += "#\n"
+	for a, aa := range nodes {
+		for b := range aa {
+			tgf += fmt.Sprintf("%s %s\n", a, b)
+		}
+	}
+
+	log.Printf("tgf: %v", tgf)
 
 	cmd := exec.Command("python", binDir+"tgf2svg.py")
 	cmd.Stdin = bytes.NewBuffer([]byte(tgf))
@@ -91,10 +110,11 @@ func compare(usernames ...string) (*Output, error) {
 		return nil, err
 	}
 
-	log.Printf("out: %v", string(stdOut.Bytes()))
-	log.Printf("err: %v", string(stdErr.Bytes()))
+	buf := stdOut.Bytes()
 
-	hash := fmt.Sprintf("%x", md5.Sum(stdOut.Bytes()))
+	log.Printf("out: %v", string(buf))
+
+	hash := fmt.Sprintf("%x", md5.Sum(buf))
 
 	fileName := path.Join(dataDir, hash+".svg")
 
@@ -102,7 +122,7 @@ func compare(usernames ...string) (*Output, error) {
 	if err == nil {
 		// TODO: is it a dir?
 		return &Output{
-			Image: path.Base(fileName),
+			Image: "/compare/view/" + path.Base(fileName),
 			Data:  data,
 		}, nil
 	}
@@ -114,12 +134,12 @@ func compare(usernames ...string) (*Output, error) {
 	}
 	defer fp.Close()
 
-	if _, err := fp.Write(stdOut.Bytes()); err != nil {
+	if _, err := fp.Write(buf); err != nil {
 		return nil, err
 	}
 
 	return &Output{
-		Image: path.Base(fileName),
+		Image: "/compare/view/" + path.Base(fileName),
 		Data:  data,
 	}, nil
 }

@@ -41,7 +41,7 @@ func TestCompare(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	t.Logf("buf2: %v", string(buf))
+	// t.Logf("buf2: %v", string(buf))
 
 	if res.StatusCode != 200 {
 		t.Fatalf("Expecting 200")
