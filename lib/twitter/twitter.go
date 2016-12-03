@@ -23,9 +23,9 @@ var (
 )
 
 func init() {
-	anaconda.SetConsumerKey("rzOULAw1RmqCSbhH9Mwlas6kF")
-	anaconda.SetConsumerSecret("SvJRKbWO1d3A6VzRMqZEgbR67aLtF3Lp3Vo94RWfd9LbluuzRz")
-	api = anaconda.NewTwitterApi("4830555837-VYIXrgP3ehP4wtWgQfsqGFS6yvLlAsMwjSxqeV7", "H2JohUEU4q65SlglPCMws7aPk1Vx2pFEih254heTEKttb")
+	anaconda.SetConsumerKey("UsrJ9YUKU8VwayuIu1M95zdc3")
+	anaconda.SetConsumerSecret("8ftX1TdKOCNb86wlUk1ISzWe37VK8larowJySl6l8z4td65QfE")
+	api = anaconda.NewTwitterApi("4830555837-efdRD4A8vcXt3lWUOfLyjtg1wyP6s15FCcfh9L2", "VlrFuw2mb6W08EcSI2qCbJQLGLsTyEBxIlbqIEatxofRh")
 
 	var err error
 	db, err = bolt.Open("my.db", 0600, &bolt.Options{Timeout: 1 * time.Second})
@@ -97,6 +97,11 @@ func GetUser(username string) (*data.User, error) {
 }
 
 func GetFollowing(username string) ([]data.User, error) {
+	_, err := GetUser(username)
+	if err != nil {
+		return nil, err
+	}
+
 	pages := api.GetFriendsIdsAll(url.Values{"screen_name": {username}})
 
 	ids := []int64{}
@@ -108,6 +113,11 @@ func GetFollowing(username string) ([]data.User, error) {
 }
 
 func GetFollowers(username string) ([]data.User, error) {
+	_, err := GetUser(username)
+	if err != nil {
+		return nil, err
+	}
+
 	pages := api.GetFollowersIdsAll(url.Values{"screen_name": {username}})
 
 	ids := []int64{}

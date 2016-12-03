@@ -20,4 +20,14 @@ func TestGetUser(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Logf("following: %v", len(following))
+
+	_, err = GetFollowers("xiam34345435345")
+	if err == nil {
+		t.Fatal("Expecting error")
+	}
+
+	_, err = GetFollowing("xiam34345435345")
+	if err == nil {
+		t.Fatal("Expecting error")
+	}
 }

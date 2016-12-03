@@ -97,6 +97,10 @@ func compare(usernames ...string) (*Output, error) {
 		}
 	}
 
+	if len(filterUsers) < 1 {
+		return nil, errors.New("No friends")
+	}
+
 	tgf := ""
 	for id, username := range filterUsers {
 		tgf += fmt.Sprintf("%s %s\n", id, username)
