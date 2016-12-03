@@ -161,3 +161,8 @@ Imagen SVG
 # Etapa 5
 
 * Cliente
+
+## Test API
+
+http://45.55.217.15:3000/compare?user=testfoo1&user=rowantestacc
+
