@@ -10,6 +10,24 @@ Entrada
 ```
 [
     {
+        "following": [
+            {
+                "id_str": "00021",
+                "username": "pepe21"
+            },
+            {
+                "id_str": "00022",
+                "username": "pepe22"
+            },
+            {
+                "id_str": "00023",
+                "username": "pepe23"
+            },
+            {
+                "id_str": "00024",
+                "username": "pepe24"
+            }
+        ],
         "followers": [
             {
                 "id_str": "00021",
