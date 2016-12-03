@@ -1,20 +1,37 @@
 package compare
 
 import (
+	"bytes"
 	"crypto/md5"
 	"errors"
 	"fmt"
 	"github.com/edgarh2e/codecamp2016/data"
 	"github.com/edgarh2e/codecamp2016/lib/twitter"
+	"io/ioutil"
+	"log"
 	"os"
+	"os/exec"
 	"path"
 )
 
 const dataDir = "/tmp"
 
+const binDir = "./../bin/"
+
 type Output struct {
 	Image string      `json:"image"`
 	Data  []data.User `json:"data"`
+}
+
+func readImage(file string) ([]byte, error) {
+	fileName := path.Base(path.Clean(file))
+	fp, err := os.Open(path.Join(dataDir, fileName))
+	if err != nil {
+		return nil, err
+	}
+	defer fp.Close()
+
+	return ioutil.ReadAll(fp)
 }
 
 func compare(usernames ...string) (*Output, error) {
@@ -43,20 +60,39 @@ func compare(usernames ...string) (*Output, error) {
 		data = append(data, *user)
 	}
 
-	svg := `
-		<svg xmlns="http://www.w3.org/2000/svg"
-				xmlns:xlink="http://www.w3.org/1999/xlink">
+	tgf := `1 uno
+2 dos
+3 tres
+4 cuatro
+5 cinco
+6 seis
+7 siete
+#
+1 2
+3 4
+1 5
+2 5
+6 6
+7 1
+7 2
+7 3
+2 7
+6 1`
 
-				<path d="M50,50
-								 A30,30 0 0,1 35,20
-								 L100,100
-								 M110,110
-								 L100,0"
-							style="stroke:#660000; fill:none;"/>
-		</svg>
-	`
+	cmd := exec.Command("python", binDir+"tgf2svg.py")
+	cmd.Stdin = bytes.NewBuffer([]byte(tgf))
 
-	hash := fmt.Sprintf("%x", md5.Sum([]byte(svg)))
+	stdOut, stdErr := bytes.NewBuffer(nil), bytes.NewBuffer(nil)
+
+	err := cmd.Run()
+	if err != nil {
+		return nil, err
+	}
+
+	log.Printf("out: %v", string(stdOut.Bytes()))
+	log.Printf("err: %v", string(stdErr.Bytes()))
+
+	hash := fmt.Sprintf("%x", md5.Sum(stdOut.Bytes()))
 
 	fileName := path.Join(dataDir, hash+".svg")
 
@@ -70,12 +106,13 @@ func compare(usernames ...string) (*Output, error) {
 	}
 
 	fp, err = os.Create(fileName)
+	log.Printf("filename: %v", fileName)
 	if err != nil {
 		return nil, err
 	}
 	defer fp.Close()
 
-	if _, err := fp.Write([]byte(svg)); err != nil {
+	if _, err := fp.Write(stdOut.Bytes()); err != nil {
 		return nil, err
 	}
 

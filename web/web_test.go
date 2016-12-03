@@ -30,4 +30,21 @@ func TestCompare(t *testing.T) {
 		t.Fatalf("Expecting 200")
 	}
 
+	res, err = http.Get(servicePrefix + "/compare/view/6f4c3d9ed1df50276f41d89cedf0c7a9.svg")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer res.Body.Close()
+
+	buf, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	t.Logf("buf2: %v", string(buf))
+
+	if res.StatusCode != 200 {
+		t.Fatalf("Expecting 200")
+	}
+
 }
