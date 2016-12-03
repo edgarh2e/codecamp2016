@@ -11,3 +11,24 @@
 
 	output.gv.svg
 	output.gv
+
+
+++++++++++++++++++++++++++++++++++++++++
+Ejecución del programa java:
+
+Descripción: Programa que devuelve la lista de amigos dado un usuario
+
+Ejeecución:
+java -jar C:\Users\Administrador\Desktop\json.jar
+
+Salida:
+0002
+0003
+0001
+0002 00022
+0001 00022
+0001 00023
+0001 00024
+
+Condiciones:
+Debe existir un archivo "C:\\test.json" que contenga el arreglo de usuarios a parsear.
