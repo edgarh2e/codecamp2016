@@ -92,7 +92,9 @@ func compare(usernames ...string) (*Output, error) {
 	tgf += "#\n"
 	for a, aa := range nodes {
 		for b := range aa {
-			tgf += fmt.Sprintf("%s %s\n", a, b)
+			if nodes[a][b] && nodes[b][a] {
+				tgf += fmt.Sprintf("%s %s\n", a, b)
+			}
 		}
 	}
 
